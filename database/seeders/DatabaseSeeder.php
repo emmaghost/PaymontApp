@@ -18,8 +18,8 @@ class DatabaseSeeder extends Seeder
     {
         User::factory()->create([
             'name' => 'admin',
-            'email' => 'admin@softui.com',
-            'password' => Hash::make('secret')
+            'email' => 'admin@paymon.com',
+            'password' => Hash::make('12345678')
         ]);
     }
 }
