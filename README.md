@@ -50,7 +50,40 @@ Laravel y Livewire para construir una interfaz de usuario dinámica y modular.
 Sanctum para autenticación de API, lo cual asegura que solo los usuarios registrados y autenticados puedan acceder a los endpoints.
 Código reutilizable y organizado a través de controladores específicos y, en caso necesario, servicios para operaciones más complejas.
 Pruebas Unitarias que validan la correcta funcionalidad de los endpoints y funcionalidades principales del sistema. Todas las pruebas cumplen con los escenarios requeridos, y la cobertura asegura la calidad del código.
-Configuración e Instalación
+
+Este proyecto es un sistema de enseñanza en línea diseñado para permitir que usuarios (estudiantes) accedan a cursos categorizados por edades y temas, mientras que los administradores gestionan el contenido y visualizan estadísticas del avance y la actividad de los usuarios. Incluye una interfaz web y una API en el mismo proyecto para interactuar tanto con usuarios finales como con aplicaciones externas.
+
+Funcionalidades Principales
+Roles y Permisos:
+
+El sistema emplea el paquete Spatie Laravel-Permission para gestionar roles y permisos, asegurando control de acceso a las diferentes funcionalidades.
+Se utilizan dos roles:
+Administrador: gestiona la creación de cursos, videos, categorías y grupos de edades; además, administra comentarios, estadísticas de visualización y likes.
+Usuario: puede registrarse, acceder a cursos según categoría y edad, marcar videos como completados, comentar, y dar likes.
+En el registro de nuevos usuarios, automáticamente se les asigna el rol de "Usuario".
+Autenticación con Tokens:
+
+Se utiliza Laravel Sanctum para la autenticación de API a través de tokens. Esto permite el acceso seguro a los endpoints de la API, donde los usuarios deben autenticarse antes de realizar acciones como registrarse en cursos o comentar en videos.
+Administración de Cursos y Videos:
+
+Los cursos son administrados por el rol de administrador y pueden ser categorizados por temas y grupos de edad.
+Cada curso contiene múltiples videos, que pueden estar en YouTube. Los videos incluyen categorías, duraciones y otros metadatos.
+Registro de Progreso y Avance en los Cursos:
+
+Cada usuario puede registrarse en un curso y su progreso se mide automáticamente según los videos completados.
+La funcionalidad para marcar videos como completados utiliza una tabla pivote (video_user) entre videos y usuarios, permitiendo el seguimiento de los videos vistos por cada usuario.
+El progreso del curso se calcula dividiendo la cantidad de videos completados entre el total de videos del curso, multiplicando el resultado por 100 para obtener el porcentaje.
+Interacción del Usuario (Comentarios y Likes):
+
+Los usuarios pueden comentar en los videos, y estos comentarios pasan a una cola de moderación donde el administrador puede aprobarlos o rechazarlos.
+Los usuarios pueden dar "likes" a los videos, y el sistema permite dar o quitar likes según el estado actual.
+Estadísticas y Visualización:
+
+El administrador puede ver la lista de usuarios registrados en cada curso, con detalles de su progreso y el último video visto.
+Los administradores también pueden revisar estadísticas como el total de vistas de videos, comentarios, y likes.
+
+
+
 Requisitos:
 
 Apache, PHP, MySQL o cualquier otro servidor compatible.
