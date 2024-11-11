@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('comments', function (Blueprint $table) {
+        Schema::create('course_user', function (Blueprint $table) {
             $table->id();
-            $table->text('comment');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('video_id')->constrained()->onDelete('cascade');
-            $table->boolean('approved')->default(false); // Para aprobar o rechazar comentarios
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');   // Clave foránea para User
+            $table->foreignId('course_id')->constrained()->onDelete('cascade'); // Clave foránea para Course
+            $table->integer('progress')->default(0); // Campo opcional para progreso del curso
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('comments');
+        Schema::dropIfExists('course_user');
     }
 };

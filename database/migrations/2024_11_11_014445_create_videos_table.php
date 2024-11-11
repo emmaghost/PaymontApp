@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description');
+            $table->integer('duration')->nullable(); // Duración en minutos
             $table->string('url'); // URL del video (puede ser de YouTube)
             $table->foreignId('course_id')->constrained()->onDelete('cascade');
             $table->foreignId('category_id')->nullable()->constrained()->onDelete('set null');

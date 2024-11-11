@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('comments', function (Blueprint $table) {
+        Schema::create('video_user', function (Blueprint $table) {
             $table->id();
-            $table->text('comment');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('video_id')->constrained()->onDelete('cascade');
-            $table->boolean('approved')->default(false); // Para aprobar o rechazar comentarios
+            $table->boolean('is_completed')->default(false); // Indica si el video fue completado
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('comments');
+        Schema::dropIfExists('video_user');
     }
 };

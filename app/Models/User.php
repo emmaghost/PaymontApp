@@ -42,4 +42,29 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function videos()
+    {
+        return $this->belongsToMany(Video::class, 'video_user')
+                    ->withPivot('is_completed')
+                    ->withTimestamps();
+    }
+
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class, 'course_user')
+                    ->withTimestamps()
+                    ->withPivot('progress'); // Campo adicional para el progreso del curso, si es necesario
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
 }

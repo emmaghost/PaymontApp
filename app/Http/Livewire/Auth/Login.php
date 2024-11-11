@@ -33,7 +33,7 @@ class Login extends Component
             if ($user->hasRole('admin')) {
                 return redirect()->intended('/admin/dashboard');
             } elseif ($user->hasRole('user')) {
-                return redirect()->intended('/user/dashboard');
+                return redirect()->intended('/dashboard');
             }
             // Redirección por defecto si no tiene rol específico
             return redirect()->intended('/dashboard');

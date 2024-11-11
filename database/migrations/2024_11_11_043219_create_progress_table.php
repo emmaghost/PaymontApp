@@ -9,23 +9,23 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
-        Schema::create('comments', function (Blueprint $table) {
+        Schema::create('progress', function (Blueprint $table) {
             $table->id();
-            $table->text('comment');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('video_id')->constrained()->onDelete('cascade');
-            $table->boolean('approved')->default(false); // Para aprobar o rechazar comentarios
+            $table->integer('progress')->default(0); // Representa el porcentaje de progreso
             $table->timestamps();
         });
     }
+    
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('comments');
+        Schema::dropIfExists('progress');
     }
 };
