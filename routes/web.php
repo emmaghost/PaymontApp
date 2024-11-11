@@ -17,7 +17,6 @@ use App\Http\Livewire\Admin\CourseManager;
 use App\Http\Livewire\Admin\CourseUserProgress;
 use App\Http\Livewire\Admin\VideoManager;
 use App\Http\Livewire\Admin\VideoCommentsManager;
-use App\Http\Livewire\CourseSearch;
 use App\Http\Livewire\UserCourseDetails;
 
 
@@ -84,7 +83,6 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     //Route::get('/courses', CourseSearch::class)->name('user.course.search');
     Route::get('/courses', App\Http\Livewire\CourseCatalog::class)->name('courses.catalog');
 
-    Route::get('/courses/{courseId}/register', [CourseController::class, 'register'])->name('user.course.register');
     Route::get('/curso/{courseId}', UserCourseDetails::class)->name('course.detail');
     Route::get('/mis-cursos', \App\Http\Livewire\UserCourses::class)->name('user.courses');
 
