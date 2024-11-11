@@ -176,7 +176,151 @@ Al iniciar sesión, el usuario obtiene un token que se debe enviar en cada solic
 Conclusión y Resumen de Pruebas Unitarias
 El sistema ha sido implementado y probado a través de pruebas unitarias que verifican la funcionalidad de los endpoints, la autenticación con tokens, la asignación de roles, y la lógica de avance en los cursos. Todas las pruebas relacionadas con las funcionalidades mencionadas han sido completadas satisfactoriamente y cubren tanto las acciones en el sistema web como las interacciones a través de la API.
 
-Este README proporciona una visión general completa del proyecto, detalla las funcionalidades y describe la arquitectura utilizada para cumplir con los requisitos de un sistema de enseñanza en línea robusto y escalable.
+1. Autenticación
+Generar un Token de Acceso
+Ruta: /api/login
+Método: POST
+Cuerpo de la Solicitud (JSON):
+json
+Copiar código
+{
+  "email": "user@example.com",
+  "password": "yourpassword"
+}
+Respuesta Exitosa:
+json
+Copiar código
+{
+  "message": "Login successful",
+  "token": "your_generated_token",
+  "user": {
+    "id": 1,
+    "name": "User Name",
+    "email": "user@example.com",
+    ...
+  }
+}
+Nota: Guarda el token de la respuesta para usarlo en todas las solicitudes que requieran autenticación. En Postman, añade este token en la pestaña de "Authorization" seleccionando "Bearer Token" y pegando el valor del token.
+2. Listar Cursos
+Listar todos los Cursos
+Ruta: /api/courses
+Método: GET
+Cabecera: Autenticación Bearer Token.
+Respuesta Exitosa:
+json
+Copiar código
+{
+  "data": [
+    {
+      "id": 1,
+      "title": "Curso de Ejemplo",
+      "category": "Programación",
+      "age_group": "9-13",
+      ...
+    },
+    ...
+  ]
+}
+3. Buscar Cursos por Categoría, Edad o Nombre
+Búsqueda de Cursos
+Ruta: /api/courses/search
+Método: GET
+Cabecera: Autenticación Bearer Token.
+Parámetros de Consulta (opcional, usa uno o varios):
+category_id=1
+age_group=9-13
+name=Curso
+Respuesta Exitosa:
+json
+Copiar código
+{
+  "data": [
+    {
+      "id": 2,
+      "title": "Curso de Programación",
+      "category": "Programación",
+      "age_group": "9-13",
+      ...
+    },
+    ...
+  ]
+}
+4. Registrar un Usuario en un Curso
+Inscribirse en un Curso
+Ruta: /api/courses/{course_id}/enroll
+Método: POST
+Cabecera: Autenticación Bearer Token.
+Cuerpo de la Solicitud: No es necesario.
+Respuesta Exitosa:
+json
+Copiar código
+{
+  "message": "Enrolled successfully",
+  "progress": 0
+}
+5. Obtener Videos de un Curso
+Listar Videos de un Curso
+Ruta: /api/courses/{course_id}/videos
+Método: GET
+Cabecera: Autenticación Bearer Token.
+Respuesta Exitosa:
+json
+Copiar código
+{
+  "data": [
+    {
+      "id": 1,
+      "title": "Introducción",
+      "url": "https://www.youtube.com/watch?v=example",
+      "duration": "10:35",
+      ...
+    },
+    ...
+  ]
+}
+6. Subir Comentarios en un Video
+Comentar en un Video
+Ruta: /api/videos/{video_id}/comment
+Método: POST
+Cabecera: Autenticación Bearer Token.
+Cuerpo de la Solicitud (JSON):
+json
+Copiar código
+{
+  "comment": "Muy buen video, gracias por compartir!"
+}
+Respuesta Exitosa:
+json
+Copiar código
+{
+  "message": "Comment submitted for approval"
+}
+7. Dar Likes a un Video
+Like o Unlike a un Video
+Ruta: /api/videos/{video_id}/like
+Método: POST
+Cabecera: Autenticación Bearer Token.
+Cuerpo de la Solicitud: No es necesario.
+Respuesta Exitosa:
+json
+Copiar código
+{
+  "message": "Liked successfully"
+}
+Nota: Si el usuario ya dio like al video, este endpoint eliminará el like en lugar de agregar otro.
+8. Marcar Video como Completado
+Marcar un Video como Completado
+Ruta: /api/videos/{video_id}/complete
+Método: POST
+Cabecera: Autenticación Bearer Token.
+Cuerpo de la Solicitud: No es necesario.
+Respuesta Exitosa:
+json
+Copiar código
+{
+  "message": "Video marked as completed",
+  "progress": 50  // Indica el porcentaje de avance en el curso
+}
 
 
 Requisitos:
