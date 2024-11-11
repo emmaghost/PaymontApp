@@ -68,6 +68,9 @@ Algunas Pantallas de la aplicacion web:
 
 ![image](https://github.com/user-attachments/assets/13491eaf-d72e-49a7-ae4e-73242ad4479e)
 
+![image](https://github.com/user-attachments/assets/8573fdd6-e135-424a-8f0d-9c3f5cfe7c22)
+
+
 Pasos de Instalación:
 
 
