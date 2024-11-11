@@ -79,6 +79,7 @@ Clonar el repositorio en su entorno local.
 Configurar el archivo .env con la conexión a su base de datos.
 Ejecutar composer install para instalar dependencias.
 Crear las tablas y semillar datos ejecutando php artisan migrate --seed.
+Crear los roles y permisos :  php artisan db:seed --class=RoleAndPermissionSeeder
 Crear el enlace de almacenamiento con php artisan storage:link.
 Acceso y Pruebas:
 
