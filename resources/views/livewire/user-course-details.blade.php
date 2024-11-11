@@ -9,7 +9,9 @@
                             @if($isEnrolled)
                                 <p>Estás inscrito en este curso.</p>
                             @else
-                                <p>Debes inscribirte en el curso para interactuar.</p>
+                                <button class="btn bg-gradient-primary btn-sm" wire:click="enroll">
+                                    Inscribirme
+                                </button>
                             @endif
                         </div>
                     </div>
@@ -40,12 +42,17 @@
                                                         <i class="fas fa-thumbs-up {{ in_array($video->id, $likedVideos) ? 'text-success' : 'text-secondary' }}"></i>
                                                     </button>
                                                     @if($this->hasComment($video->id))
-                                                            <p class="text-xs text-muted">{{ $this->getComment($video->id) }}</p>
-                                                        @else
-                                                            <button wire:click="commentOnVideo({{ $video->id }})" class="btn btn-link" title="Comentar">
-                                                                <i class="fas fa-comment text-secondary"></i>
-                                                            </button>
-                                                        @endif
+                                                        <p class="text-xs text-muted">{{ $this->getComment($video->id) }}</p>
+                                                    @else
+                                                        <button wire:click="commentOnVideo({{ $video->id }})" class="btn btn-link" title="Comentar">
+                                                            <i class="fas fa-comment text-secondary"></i>
+                                                        </button>
+                                                    @endif
+                                                      <!-- Botón de Terminar Video -->
+                                                    <button wire:click="markVideoAsCompleted({{ $video->id }})" class="btn btn-link" title="Marcar como Terminado">
+                                                        <i class="fas fa-check-circle {{ in_array($video->id, $completedVideos) ? 'text-success' : 'text-secondary' }}"></i>
+                                                        {{ in_array($video->id, $completedVideos) ? 'Terminado' : 'Terminar' }}
+                                                    </button>
                                                 @else
                                                     <span class="text-muted">Debes inscribirte para interactuar</span>
                                                 @endif
@@ -81,7 +88,7 @@
             </div>
         @endif
 
-       <!-- Mensaje de confirmación -->
+       <!-- Mensajes de Confirmación y Error -->
         @if(session()->has('message'))
             <div class="alert alert-success mt-4">
                 {{ session('message') }}
@@ -92,6 +99,5 @@
                 {{ session('error') }}
             </div>
         @endif
-
     </div>
 </main>

@@ -86,6 +86,8 @@ Route::middleware(['auth', 'role:user'])->group(function () {
 
     Route::get('/courses/{courseId}/register', [CourseController::class, 'register'])->name('user.course.register');
     Route::get('/curso/{courseId}', UserCourseDetails::class)->name('course.detail');
+    Route::get('/mis-cursos', \App\Http\Livewire\UserCourses::class)->name('user.courses');
+
 
 
 

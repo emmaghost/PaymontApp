@@ -22,6 +22,8 @@ class UserCourseDetails extends Component
     public $showCommentModal = false;
     public $likedVideos = [];
     public $selectedVideoId;
+    public $completedVideos = []; // Declaramos $completedVideos
+
 
     
 
@@ -34,12 +36,69 @@ class UserCourseDetails extends Component
         $this->videos = Video::where('course_id', $courseId)->get();
         $this->isEnrolled = auth()->check() && auth()->user()->courses()->where('course_id', $courseId)->exists();
         if ($this->isEnrolled) {
+            $this->completedVideos = \DB::table('videos')
+            ->join('video_user', 'videos.id', '=', 'video_user.video_id')
+            ->where('video_user.user_id', auth()->id())
+            ->where('video_user.is_completed', true)
+            ->pluck('videos.id')
+            ->toArray();
             $this->likedVideos = Like::where('user_id', auth()->id())
                 ->whereIn('video_id', $this->videos->pluck('id'))
                 ->pluck('video_id')
                 ->toArray();
         }
 
+    }
+
+    public function markVideoAsCompleted($videoId)
+    {
+        $user = auth()->user();
+
+        if (!$this->isEnrolled) {
+            session()->flash('error', 'Debes estar inscrito en el curso para marcar videos como completados.');
+            return;
+        }
+
+        // Verificar si ya existe un registro en la tabla `video_user`
+        $existingCompletion = \DB::table('video_user')
+            ->where('user_id', $user->id)
+            ->where('video_id', $videoId)
+            ->first();
+
+        if (!$existingCompletion) {
+            // Crear registro si no existe
+            $user->videos()->attach($videoId, ['is_completed' => true]);
+            session()->flash('message', 'Video marcado como completado.');
+        } else {
+            // Si ya existe, actualizar el campo `is_completed`
+            $user->videos()->updateExistingPivot($videoId, ['is_completed' => true]);
+            session()->flash('message', 'Video ya estaba marcado como completado.');
+        }
+
+        // Actualizar la lista de videos completados y recalcular el progreso
+        $this->updateCompletedVideos();
+        $this->calculateProgress();
+    }
+
+    // Método para actualizar la lista de videos completados
+    protected function updateCompletedVideos()
+    {
+        $this->completedVideos = \DB::table('videos')
+            ->join('video_user', 'videos.id', '=', 'video_user.video_id')
+            ->where('video_user.user_id', auth()->id())
+            ->where('video_user.is_completed', true)
+            ->pluck('videos.id')
+            ->toArray();
+    }
+
+    // Método para calcular y actualizar el progreso en course_user
+    protected function calculateProgress()
+    {
+        $totalVideos = $this->videos->count();
+        $completedCount = count($this->completedVideos);
+        $progress = $totalVideos > 0 ? ($completedCount / $totalVideos) * 100 : 0;
+
+        auth()->user()->courses()->updateExistingPivot($this->courseId, ['progress' => $progress]);
     }
     public function likeVideo($videoId)
     {
@@ -124,7 +183,10 @@ class UserCourseDetails extends Component
     public function render()
     {
         return view('livewire.user-course-details', [
-            'isEnrolled' => $this->isEnrolled  ]);
+            'isEnrolled' => $this->isEnrolled,
+            'course' => $this->course,
+            'videos' => $this->videos,
+            'completedVideos' => $this->completedVideos, ]);
     }
 
    
