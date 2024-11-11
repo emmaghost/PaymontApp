@@ -83,6 +83,101 @@ El administrador puede ver la lista de usuarios registrados en cada curso, con d
 Los administradores también pueden revisar estadísticas como el total de vistas de videos, comentarios, y likes.
 
 
+Claro, aquí tienes una documentación ampliada para tu proyecto que cubre la funcionalidad de las APIs, la autenticación y roles, así como detalles específicos sobre el sistema de registro, progreso de videos y más.
+
+Documentación del Proyecto de Sitio de Enseñanza en Línea
+Descripción General
+Este proyecto es un sistema de enseñanza en línea diseñado para permitir que usuarios (estudiantes) accedan a cursos categorizados por edades y temas, mientras que los administradores gestionan el contenido y visualizan estadísticas del avance y la actividad de los usuarios. Incluye una interfaz web y una API en el mismo proyecto para interactuar tanto con usuarios finales como con aplicaciones externas.
+
+Funcionalidades Principales
+Roles y Permisos:
+
+El sistema emplea el paquete Spatie Laravel-Permission para gestionar roles y permisos, asegurando control de acceso a las diferentes funcionalidades.
+Se utilizan dos roles:
+Administrador: gestiona la creación de cursos, videos, categorías y grupos de edades; además, administra comentarios, estadísticas de visualización y likes.
+Usuario: puede registrarse, acceder a cursos según categoría y edad, marcar videos como completados, comentar, y dar likes.
+En el registro de nuevos usuarios, automáticamente se les asigna el rol de "Usuario".
+Autenticación con Tokens:
+
+Se utiliza Laravel Sanctum para la autenticación de API a través de tokens. Esto permite el acceso seguro a los endpoints de la API, donde los usuarios deben autenticarse antes de realizar acciones como registrarse en cursos o comentar en videos.
+Administración de Cursos y Videos:
+
+Los cursos son administrados por el rol de administrador y pueden ser categorizados por temas y grupos de edad.
+Cada curso contiene múltiples videos, que pueden estar en YouTube. Los videos incluyen categorías, duraciones y otros metadatos.
+Registro de Progreso y Avance en los Cursos:
+
+Cada usuario puede registrarse en un curso y su progreso se mide automáticamente según los videos completados.
+La funcionalidad para marcar videos como completados utiliza una tabla pivote (video_user) entre videos y usuarios, permitiendo el seguimiento de los videos vistos por cada usuario.
+El progreso del curso se calcula dividiendo la cantidad de videos completados entre el total de videos del curso, multiplicando el resultado por 100 para obtener el porcentaje.
+Interacción del Usuario (Comentarios y Likes):
+
+Los usuarios pueden comentar en los videos, y estos comentarios pasan a una cola de moderación donde el administrador puede aprobarlos o rechazarlos.
+Los usuarios pueden dar "likes" a los videos, y el sistema permite dar o quitar likes según el estado actual.
+Estadísticas y Visualización:
+
+El administrador puede ver la lista de usuarios registrados en cada curso, con detalles de su progreso y el último video visto.
+Los administradores también pueden revisar estadísticas como el total de vistas de videos, comentarios, y likes.
+Funcionalidades del API
+El proyecto incluye una API que permite realizar varias operaciones relacionadas con el sistema de enseñanza en línea. A continuación se presentan los endpoints principales:
+
+Endpoints Principales
+Listar Cursos:
+
+Endpoint: GET /api/courses
+Función: Devuelve una lista de todos los cursos disponibles con información detallada.
+Acceso: Requiere autenticación.
+Buscar Cursos por Categoría, Edad o Nombre:
+
+Endpoint: GET /api/courses/search
+Parámetros: category_id, age_group, name (parámetros opcionales para filtrar resultados).
+Función: Permite buscar cursos en función de una categoría específica, un grupo de edad, o por el nombre del curso.
+Acceso: Requiere autenticación.
+Registrar un Usuario en un Curso:
+
+Endpoint: POST /api/courses/{course_id}/enroll
+Función: Registra al usuario autenticado en un curso específico, si aún no lo está, y establece su progreso inicial en 0%.
+Acceso: Requiere autenticación.
+Obtener Videos de un Curso:
+
+Endpoint: GET /api/courses/{course_id}/videos
+Función: Devuelve todos los videos de un curso específico, permitiendo al usuario visualizar el contenido.
+Acceso: Requiere autenticación.
+Subir Comentarios en un Video:
+
+Endpoint: POST /api/videos/{video_id}/comment
+Parámetro: comment (contenido del comentario).
+Función: Permite al usuario autenticado comentar en un video específico. El comentario queda pendiente hasta ser aprobado por un administrador.
+Acceso: Requiere autenticación.
+Dar Likes a un Video:
+
+Endpoint: POST /api/videos/{video_id}/like
+Función: Permite dar o quitar un "like" a un video. Si el usuario ya ha dado un "like", este se retira; si no, se añade.
+Acceso: Requiere autenticación.
+Marcar Video como Completado:
+
+Endpoint: POST /api/videos/{video_id}/complete
+Función: Marca un video como completado en la tabla pivote video_user, actualiza el progreso del usuario en el curso, y calcula el porcentaje completado.
+Acceso: Requiere autenticación.
+Implementación de Progreso de Curso
+Para calcular el avance en un curso:
+
+Al ver un video: Cuando un usuario marca un video como completado, se registra en la tabla pivote video_user con el campo is_completed.
+Cálculo de progreso: Se cuenta el número de videos completados y se divide entre el total de videos en el curso. Este resultado se multiplica por 100 para obtener el porcentaje de avance.
+Actualización en course_user: El porcentaje calculado se guarda en la tabla course_user en el campo progress.
+Autenticación y Roles en el Sistema
+Registro y Asignación de Roles:
+
+En el proceso de registro, el sistema asigna automáticamente el rol "Usuario" a cada nuevo usuario registrado.
+Se utiliza Spatie Laravel-Permission para asignar y verificar los roles.
+Protección de Endpoints con Sanctum:
+
+Todos los endpoints de la API requieren autenticación de usuario mediante tokens de Sanctum, asegurando así un acceso seguro.
+Al iniciar sesión, el usuario obtiene un token que se debe enviar en cada solicitud API para realizar acciones autorizadas.
+Conclusión y Resumen de Pruebas Unitarias
+El sistema ha sido implementado y probado a través de pruebas unitarias que verifican la funcionalidad de los endpoints, la autenticación con tokens, la asignación de roles, y la lógica de avance en los cursos. Todas las pruebas relacionadas con las funcionalidades mencionadas han sido completadas satisfactoriamente y cubren tanto las acciones en el sistema web como las interacciones a través de la API.
+
+Este README proporciona una visión general completa del proyecto, detalla las funcionalidades y describe la arquitectura utilizada para cumplir con los requisitos de un sistema de enseñanza en línea robusto y escalable.
+
 
 Requisitos:
 
