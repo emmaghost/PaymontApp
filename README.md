@@ -1,4 +1,9 @@
 Sistema de Gestión de Cursos en Línea
+
+![image](https://github.com/user-attachments/assets/a4e5a857-7c0d-4db7-9982-36ddd26012aa)
+
+
+
 Este sistema de enseñanza en línea, desarrollado en Laravel y Livewire, permite a usuarios y administradores gestionar cursos con contenido en video de forma dinámica e interactiva. La aplicación incluye tanto una interfaz web como una API, asegurando flexibilidad y accesibilidad para administradores y usuarios. Este proyecto incorpora roles, administración de contenido y monitoreo de progreso, cumpliendo con los objetivos de pruebas unitarias, diseño de APIs, y código reutilizable.
 
 Para mejorar la presentación y usabilidad de la interfaz, se utilizó el tema gratuito Soft UI Dashboard Laravel Livewire de Creative Tim, que aporta una estructura visual moderna y atractiva. Esto asegura que el sistema sea fácil de navegar y visualmente agradable, tanto para administradores como para usuarios.
@@ -51,7 +56,21 @@ Requisitos:
 Apache, PHP, MySQL o cualquier otro servidor compatible.
 Composer para la gestión de dependencias.
 Laravel.
+
+
+Algunas Pantallas de la aplicacion web:
+
+
+![image](https://github.com/user-attachments/assets/9e3c5b87-5156-4529-9fd6-4d06b0e6023f)
+
+
+![image](https://github.com/user-attachments/assets/6121311c-1881-432b-824d-bc66fd06bb93)
+
+![image](https://github.com/user-attachments/assets/13491eaf-d72e-49a7-ae4e-73242ad4479e)
+
 Pasos de Instalación:
+
+
 
 Clonar el repositorio en su entorno local.
 Configurar el archivo .env con la conexión a su base de datos.
@@ -73,30 +92,8 @@ Las pruebas están diseñadas bajo el enfoque de TDD, asegurando que cada funcio
 Estructura de Archivos
 El sistema sigue la estructura estándar de Laravel, con controladores organizados en carpetas para segmentar la lógica de administración y las interacciones en los cursos:
 
-arduino
-Copiar código
-app
-├── Console
-├── Exceptions
-├── Http
-│   ├── Controllers
-│   │   └── Api
-│   │       ├── CourseController.php      // Gestión de cursos
-│   │       ├── InteractionController.php // Interacciones en videos
-│   │       └── VideoController.php       // Gestión de videos
-│   ├── Kernel.php
-│   ├── Livewire
-│   │   ├── Auth
-│   │   │   ├── ForgotPassword.php
-│   │   │   ├── Login.php
-│   │   │   └── SignUp.php
-│   └── Middleware
-├── Models
-│   ├── Course.php
-│   ├── Video.php
-│   └── User.php
-└── Tests
-    └── Feature
-        ├── CourseControllerTest.php
-        ├── InteractionControllerTest.php
-        └── VideoControllerTest.php
+En las pruebas TDD todas salieron exitosas en la parte de las API :
+
+![image](https://github.com/user-attachments/assets/9d09f5bd-9683-410f-a025-96a4a10f01bb)
+
+
